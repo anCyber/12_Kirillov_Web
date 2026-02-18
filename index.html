@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+
+  <head>
+    <meta charset="UTF-8"> 
+    <title> WebLab 1 </title>
+    <style>
+      /*↓↓↓ GENERAL SECTION ↓↓↓*/  /*↓↓↓ GENERAL SECTION ↓↓↓*/  /*↓↓↓ GENERAL SECTION ↓↓↓*/
+      body {
+        margin: 0px;
+        background-color: rgb(22, 21, 21);
+        min-width: 1050px;
+      }
+
+      p {
+        margin: 0px;
+        color: #F1F1F1;
+        font-family: 'Courier New';
+      }
+
+      figure {
+        margin: 0px;
+      }
+
+      h1 {
+        margin-top: 8px;
+        font-family: 'Courier New';
+        font-size: clamp(32px, 2.75vw, 60px);
+        font-weight: 400;
+        color: rgba(232, 217, 213, 0.90);
+        text-align: center;
+
+        text-decoration: 2px underline rgba(232, 217, 213, 0.08);
+        text-underline-offset: 18px;
+      }
+
+      hr {
+        margin-top: 20px;
+        border: none;
+        border-top: 2px solid rgba(232, 217, 213, 0.08);
+      }
+
+      tr {
+        font-family: 'Courier New';
+        font-size: clamp(14px, 1.25vw, 19px);
+        color: rgba(234, 234, 230, 0.70);
+        font-weight: 700;
+      }
+      th {
+        font-weight: 900;
+      }
+
+      /* White cells */
+      tr:nth-child(even) :is(td,th):nth-child(even),
+      tr:nth-child(odd) :is(td,th):nth-child(odd) {
+        background: rgba(234, 234, 230, 1.0);
+        color: rgba(21, 21, 20, 0.60);
+      }
+
+      /* First column (match number) */
+      tr:nth-child(2n+3) :is(td,th):nth-child(1),
+      tr:nth-child(even) :is(td,th):nth-child(1) {
+        font-size: clamp(20px, 2vw, 26px);
+        font-weight: 900;
+      }
+
+      /* First row (headings) */
+      tr:nth-child(1) :is(td,th):nth-child(odd),
+      tr:nth-child(1) :is(td,th):nth-child(even) {
+        font-size: clamp(14px, 1.25vw, 30px);
+        color: rgba(15, 15, 14, 0.90);
+      }
+      tr:nth-child(1) :is(td,th):nth-child(even) {
+        color: rgba(240, 240, 236, 0.90);
+      }
+      /*↑↑↑ GENERAL SECTION ↑↑↑*/  /*↑↑↑ GENERAL SECTION ↑↑↑*/  /*↑↑↑ GENERAL SECTION ↑↑↑*/  
+
+
+      /*↓↓↓ ANECDOTES SECTION ↓↓↓*/  /*↓↓↓ ANECDOTES SECTION ↓↓↓*/  /*↓↓↓ ANECDOTES SECTION ↓↓↓*/
+      .anecdotes_lights_section_background {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        background-color: #272727;
+        padding: 60px 0px 80px 0px;
+        box-shadow: inset 0px -40px 20px -25px rgba(22, 21, 21, 1);
+      }
+
+
+      .anecdotes_panel_foreground {
+        max-width: 85%;
+        background-color: rgb(36, 35, 35);
+        box-shadow: 0px 0px 36px rgba(0, 0, 0, 0.75);
+        border-radius: 73px;
+        padding: 3.25%;
+      }
+
+      .anecdotes_panel_background {
+        display: flex;
+        column-gap: 2%;
+        padding: 2% 5%;
+
+        background-color: rgb(31, 28, 28);
+        box-shadow: inset 0px 0px 12px rgba(0, 0, 0, 0.42);
+        border-radius: 48px;
+      }
+
+      .single_anecdote_red_circle {
+        background-color: rgb(180, 42, 42);
+        border: 1px solid rgba(201, 201, 201, 0.02);
+        box-shadow: 0px 0px 40px rgb(213, 69, 69), inset 0px 0px 24px rgba(58, 15, 15, 0.45);
+
+        display: flex;
+        align-items: center;
+        text-align: center;
+
+        flex: 1;
+        aspect-ratio: 1 / 1;
+        border-radius: 50%;
+      }
+      .single_anecdote_red_circle:hover {
+        box-shadow: none;
+        border: none;
+        margin: 0px 1px; /* Compensating lack of border */
+        background-color: transparent;
+      }
+      .single_anecdote_red_circle:hover .anecdote_image {
+        display: inline-block;
+      }
+      .single_anecdote_red_circle:hover .anecdote_text {
+        display: none;
+      }
+
+      .anecdote_image {
+        width: 100%;
+        border-radius: 50%;
+        object-fit: contain;
+        object-position: center;
+        display: none;
+      }
+
+      .anecdote_text {
+        max-width: 77%;
+        max-height: 82%;
+        margin: auto auto;
+        font-family: Raleway;
+        font-size: clamp(11px, 1vw, 20px);
+        font-weight: 400;
+      }
+      /*↑↑↑ ANECDOTES SECTION ↑↑↑*/  /*↑↑↑ ANECDOTES SECTION ↑↑↑*/  /*↑↑↑ ANECDOTES SECTION ↑↑↑*/
+
+
+      /*↓↓↓ LO_CONTENT SECTION ↓↓↓*/  /*↓↓↓ LO_CONTENT SECTION ↓↓↓*/  /*↓↓↓ LO_CONTENT SECTION ↓↓↓*/
+      .lo_content_background {
+        background-image: url("/resources/lo_content_images/track_layout_25.png"), linear-gradient(180deg, rgba(22, 21, 21, 0.75), rgba(120, 94, 94, 0.30));
+        background-position: center;
+        background-size: contain;
+        background-repeat: no-repeat;
+        box-shadow: inset 0px -40px 60px -25px rgba(106, 86, 86, 0.20);
+      }
+
+      .lo_content_grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        column-gap: 4%;
+        row-gap: clamp(50px, 4vw, 150px);
+
+        margin: 3.5% 6%;
+        margin-bottom: 0px;
+        padding-bottom: 4%;
+
+        align-items: center;
+        justify-items: center;
+      }
+
+
+      .lo_content_description {
+        text-align: justify;
+        font-size: clamp(16px, 1.20vw, 26px);
+        color: rgba(232, 217, 213, 0.70);
+      }
+
+      .lo_content_image {
+        width: 90%;
+        height: 88%;
+        object-fit: cover;
+
+        border-radius: 4px;
+        box-shadow: 2px 4px 20px rgba(16, 16, 16, 0.80);
+      }
+      /*↑↑↑ LO_CONTENT SECTION ↑↑↑*/  /*↑↑↑ LO_CONTENT SECTION ↑↑↑*/  /*↑↑↑ LO_CONTENT SECTION ↑↑↑*/
+
+
+      /*↓↓↓ QUOTES SECTION ↓↓↓*/  /*↓↓↓ QUOTES SECTION ↓↓↓*/  /*↓↓↓ QUOTES SECTION ↓↓↓*/
+      .lo_content_quotes_background {
+        background-image: linear-gradient(180deg, rgba(120, 94, 94, 0.30), rgba(22, 21, 21, 0.75));
+        box-shadow: inset 0px 40px 60px -25px rgba(106, 86, 86, 0.20);
+      }
+
+
+      .lo_content_quotes_container {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        column-gap: 80px;
+        margin: 0px 50px;
+        padding-top: 50px;
+        padding-bottom: 50px;
+        font-family: 'Courier New';
+        font-size: clamp(12px, 1vw, 26px);
+        font-weight: bold;
+        color: rgba(220, 220, 220, 0.75);
+      }
+
+
+      .single_quote_block {
+        font-weight: 400;
+      }
+      /*↑↑↑ QUOTES SECTION ↑↑↑*/  /*↑↑↑ QUOTES SECTION ↑↑↑*/  /*↑↑↑ QUOTES SECTION ↑↑↑*/
+
+
+      /*↓↓↓ RPL SECTION ↓↓↓*/  /*↓↓↓ RPL SECTION ↓↓↓*/  /*↓↓↓ RPL SECTION ↓↓↓*/
+      .rpl_background {
+        display: flex;
+        justify-content: center;
+
+        background-image: linear-gradient(0deg, rgba(22, 21, 21, 0.75),rgba(109, 86, 86, 0.20), rgba(22, 21, 21, 0.75));
+        box-shadow: inset 0px -40px 60px -25px rgba(106, 86, 86, 0.20);
+        padding-bottom: 110px;
+      }
+
+      .rpl_table_flagpole {
+        width: 80%;
+        height: 6vh;
+        margin-top: 70px;
+        position: sticky;
+        top: 0px;
+
+        background-image: linear-gradient(315deg, rgb(60, 60, 60), rgb(44, 44, 44));
+        box-shadow: 0px 0px 70px rgba(44, 44, 44, 1.0), inset 0px 0px 20px rgba(5, 5, 5, 0.35);
+        border-top-right-radius: 3vh;
+        border-bottom-right-radius: 3vh;
+      }
+
+      .rpl_matches_table {
+        border-spacing: 0px;
+        text-align: center;
+        box-shadow:  0px 0px 40px rgba(229, 225, 202, 0.85),  0px 0px 20px rgba(255, 255, 255, 1);
+      }
+
+
+      .table_cell_content {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        width: clamp(86px, 8vw, 200px);
+        aspect-ratio: 1 / 1;
+      }
+      /*↑↑↑ RPL SECTION ↑↑↑*/  /*↑↑↑ RPL SECTION ↑↑↑*/  /*↑↑↑ RPL SECTION ↑↑↑*/
+    </style>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link type="text/css" rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link type="text/css" href="https://fonts.googleapis.com/css2?family=Raleway:wght@200&display=swap" rel="stylesheet">   <!-- weight: 200 -->
+    <link type="text/css" href="https://fonts.googleapis.com/css2?family=Raleway&display=swap" rel="stylesheet">            <!-- weight: 400 -->
+    <link type="text/css" href="https://fonts.googleapis.com/css2?family=Raleway:wght@700&display=swap" rel="stylesheet">   <!-- weight: 700 -->
+    <link type="text/css" href="https://fonts.googleapis.com/css2?family=Raleway:wght@900&display=swap" rel="stylesheet">   <!-- weight: 900 -->
+
+  </head>
+
+  
+  <body>
+
+
+<!--↓↓↓ ANECDOTES SECTION ↓↓↓--> <!--↓↓↓ ANECDOTES SECTION ↓↓↓--> <!--↓↓↓ ANECDOTES SECTION ↓↓↓--> <!--↓↓↓ ANECDOTES SECTION ↓↓↓-->
+    <header class="anecdotes_lights_section_background">
+      <div class="anecdotes_panel_foreground">
+        <div class="anecdotes_panel_background">
+
+  <!--↓↓↓ ANECDOTE 1 ↓↓↓-->
+          <figure class="single_anecdote_red_circle">
+            <p class="anecdote_text">
+              Мой бизнес по продаже цветочных удобрений шёл хорошо...
+              Но Apple подала на меня в суд...
+              У них уже был патент на продажу г()8hа для нарциссов по завышенным ценам. 
+            </p>
+            <img class="anecdote_image" src="resources/anecdote_images/image_1.png" alt="Картинка, сгенерированная ии по тексту анека_1">
+          </figure>
+  <!--↑↑↑ ANECDOTE 1 ↑↑↑-->
+
+  <!--↓↓↓ ANECDOTE 2 ↓↓↓-->
+          <figure class="single_anecdote_red_circle">
+            <p class="anecdote_text">
+              Жизнь дождевого червя после удара лопатой разделилась на до и ждевого червя.
+            </p>
+            <img class="anecdote_image" src="resources/anecdote_images/image_2.png" alt="Картинка, сгенерированная ии по тексту анека_2">
+          </figure>
+  <!--↑↑↑ ANECDOTE 2 ↑↑↑-->
+
+  <!--↓↓↓ ANECDOTE 3 ↓↓↓-->
+          <figure class="single_anecdote_red_circle">
+            <p class="anecdote_text">
+              - Батюшка, почему в интернете все говорят, что тр@*@ли мою маму?<br>
+              - Не обращай на них внимания, сын мой.
+            </p>
+            <img class="anecdote_image" src="resources/anecdote_images/image_3.png" alt="Картинка, сгенерированная ии по тексту анека_3">
+          </figure>
+  <!--↑↑↑ ANECDOTE 3 ↑↑↑-->
+
+  <!--↓↓↓ ANECDOTE 4 ↓↓↓-->
+          <figure class="single_anecdote_red_circle">
+            <p class="anecdote_text">
+              Знаете, чем пришлось пожертвовать человеку, ставшему обладателем первой посудомойки?<br>
+              Ребром.
+            </p>
+            <img class="anecdote_image" src="resources/anecdote_images/image_4.png" alt="Картинка, сгенерированная ии по тексту анека_4">
+          </figure>
+  <!--↑↑↑ ANECDOTE 4 ↑↑↑-->
+
+  <!--↓↓↓ ANECDOTE 5 ↓↓↓-->
+          <figure class="single_anecdote_red_circle">
+            <p class="anecdote_text">
+              Один терапевт - это 1024 гигапевтов и 1024^2 мегапевтов.
+            </p>
+            <img class="anecdote_image" src="resources/anecdote_images/image_5.png" alt="Картинка, сгенерированная ии по тексту анека_5">
+          </figure>
+  <!--↑↑↑ ANECDOTE 5 ↑↑↑-->
+
+        </div>
+      </div>
+    </header>
+<!--↑↑↑ ANECDOTES SECTION ↑↑↑--> <!--↑↑↑ ANECDOTES SECTION ↑↑↑--> <!--↑↑↑ ANECDOTES SECTION ↑↑↑--> <!--↑↑↑ ANECDOTES SECTION ↑↑↑-->
+
+<hr>
+
+<!--↓↓↓ LOCONTENT SECTION ↓↓↓--> <!--↓↓↓ LOCONTENT SECTION ↓↓↓--> <!--↓↓↓ LOCONTENT SECTION ↓↓↓--> <!--↓↓↓ LOCONTENT SECTION ↓↓↓--> 
+    <main class="lo_content_background">
+      <h1> F1 Гран-при Франции 2021 </h1>
+      <div class="lo_content_grid">
+  <!--↓↓↓ ROW 1 ↓↓↓-->
+        <p class="lo_content_description">
+          На зимних каникулах я решил посмотреть сезон Формулы 1 2021. Начав следить за спортом в 2024 году, я знал о происходящих в том сезоне событиях лишь понаслышке.<br>
+          Мне захотелось это исправить.<br>
+          Последним этапом, который я посмотрел на текущий момент, стал Гран-при Франции. Солнечная погода, ветер, температура воздуха 25 градусов цельсия.<br>
+          Ферстаппен, квалифицировавшийся на поул-позицию уже во втором повороте блокирует шины и теряет лидерство, пропуская вперёд своего основного соперника в битве за титул чемпиона мира - Льюиса Хэмилтона.<br>
+          Впереди 53 круга борьбы двух пилотов и двух коллективов.<br>
+          Удастся ли семикратному чемпиону мира сохранить подаренное ему лидерство до конца гонки?<br>
+          Смогут ли RedBull Racing переиграть Mercedes в стратегии?<br>
+          Кто из пилотов станет лидером чемпионата по окончании 7-го этапа этого легендарного сезона?
+        </p>
+        <img class="lo_content_image" src="resources/lo_content_images/race_start.png" alt="Непрогрузившаяся фотка начала гонки">
+  <!--↑↑↑ ROW 1 ↑↑↑-->
+
+  <!--↓↓↓ ROW 2 ↓↓↓-->
+        <img class="lo_content_image" src="resources/lo_content_images/MV-LH_wheel_to_wheel.png" alt="Непрогрузившаяся фотка борьбы Макса и Льюиса">
+        <p class="lo_content_description">
+          По началу гонка мне показалась скучной. Разменов позициями почти не происходило, начинало казаться, что все 305 оставшихся километров дистанции пройдут просто для галочки, без изменений в первой десятке.<br>
+          Однако всего через несколько кругов множество пилотов начало жаловаться на ухудшение резины. Сцепление с асфальтом скоращалось значительно быстрее, чем команды ожидали этого.<br>
+          Уже на 14-ом круге был совершён первый пит-стоп. На этом моменте стало очевидно, что решающую роль в этой гонке сыграет стратегия, которую изберёт каждая из команд.<br>
+          Множество неожиданностей, длительная погоня и один из лучших обгонов, что я видел, заставили меня изменить своё первоначальное мнение об этом этапе и пристально наблюдать за разрывом между лидерами на последних кругах гонки.<br>
+          Я рекомендую каждому, кто увлекается Формулой 1, посмотреть этот Гран-при. Вы об этом не пожалеете.
+        </p>
+  <!--↑↑↑ ROW 2 ↑↑↑--> 
+      </div>
+    </main>
+
+    <div class="lo_content_quotes_background">
+      <ul class="lo_content_quotes_container">
+
+<!--↓↓↓ QUOTE 1 ↓↓↓--> <!--↓↓↓ QUOTE 1 ↓↓↓--> <!--↓↓↓ QUOTE 1 ↓↓↓--> <!--↓↓↓ QUOTE 1 ↓↓↓--> <!--↓↓↓ QUOTE 1 ↓↓↓--> <!--↓↓↓ QUOTE 1 ↓↓↓-->
+        <li> 
+          <q class="single_quote_block">The stewards are saying 'No investigation necessary' on that turn 2 incident, where Max Verstappen went off the track.<br>
+            So no penalties coming, but it's big penalty, as that he will finish the first lap one and a half seconds behind Lewis Hamilton.</q>
+          <br><br>David Croft [Lap 1]
+        </li>
+<!--↑↑↑ QUOTE 1 ↑↑↑--> <!--↑↑↑ QUOTE 1 ↑↑↑--> <!--↑↑↑ QUOTE 1 ↑↑↑--> <!--↑↑↑ QUOTE 1 ↑↑↑--> <!--↑↑↑ QUOTE 1 ↑↑↑--> <!--↑↑↑ QUOTE 1 ↑↑↑-->
+
+<!--↓↓↓ QUOTE 2 ↓↓↓--> <!--↓↓↓ QUOTE 2 ↓↓↓--> <!--↓↓↓ QUOTE 2 ↓↓↓--> <!--↓↓↓ QUOTE 2 ↓↓↓--> <!--↓↓↓ QUOTE 2 ↓↓↓--> <!--↓↓↓ QUOTE 2 ↓↓↓-->
+        <li> 
+          <q class="single_quote_block">So 1.3 seconds covers the top three in this race.</q>
+          <br><br>Martin Brundle [Lap 25]
+        </li>
+<!--↑↑↑ QUOTE 2 ↑↑↑--> <!--↑↑↑ QUOTE 2 ↑↑↑--> <!--↑↑↑ QUOTE 2 ↑↑↑--> <!--↑↑↑ QUOTE 2 ↑↑↑--> <!--↑↑↑ QUOTE 2 ↑↑↑--> <!--↑↑↑ QUOTE 2 ↑↑↑-->
+
+<!--↓↓↓ QUOTE 3 ↓↓↓--> <!--↓↓↓ QUOTE 3 ↓↓↓--> <!--↓↓↓ QUOTE 3 ↓↓↓--> <!--↓↓↓ QUOTE 3 ↓↓↓--> <!--↓↓↓ QUOTE 3 ↓↓↓--> <!--↓↓↓ QUOTE 3 ↓↓↓-->
+        <li> 
+          <q class="single_quote_block">We see the faces on the pitwall, the pit boards has been hang out for the drivers and the engineers studying the data,
+            whilst in the cockpit, behind the visor, the gladiator scraping away. Into the chicane we go,
+            breaking once more from a top speed of round about 200 miles an hour to 85 miles an hour.</q>
+          <br><br>David Croft [Lap 27]
+        </li>
+<!--↑↑↑ QUOTE 3 ↑↑↑--> <!--↑↑↑ QUOTE 3 ↑↑↑--> <!--↑↑↑ QUOTE 3 ↑↑↑--> <!--↑↑↑ QUOTE 3 ↑↑↑--> <!--↑↑↑ QUOTE 3 ↑↑↑--> <!--↑↑↑ QUOTE 3 ↑↑↑-->
+
+      </ul>
+    </div>
+<!--↑↑↑ LOCONTENT SECTION ↑↑↑--> <!--↑↑↑ LOCONTENT SECTION ↑↑↑--> <!--↑↑↑ LOCONTENT SECTION ↑↑↑--> <!--↑↑↑ LOCONTENT SECTION ↑↑↑--> 
+
+<hr>
+
+<!--↓↓↓ RPL SECTION ↓↓↓--> <!--↓↓↓ RPL SECTION ↓↓↓--> <!--↓↓↓ RPL SECTION ↓↓↓--> <!--↓↓↓ RPL SECTION ↓↓↓--> <!--↓↓↓ RPL SECTION ↓↓↓--> 
+    
+    <h1> Расписание матчей команды Динамо Махачкала </h1>
+    <div class="rpl_table_flagpole"></div>
+    <div class="rpl_background">
+      <table class="rpl_matches_table">
+      <!--↓↓↓ HEADINGS ROW ↓↓↓-->
+          <tr>
+            <th> <div class="table_cell_content"> Номер<br>матча </div> </th>
+            <th> <div class="table_cell_content"> Дата<br>проведения </div> </th>
+            <th> <div class="table_cell_content"> Время<br>начала </div> </th>
+            <th> <div class="table_cell_content"> Хозяева </div> </th>
+            <th> <div class="table_cell_content"> Гости </div> </th>
+            <th> <div class="table_cell_content"> Итоговый<br>  счёт </div> </th>
+          </tr>
+      <!--↑↑↑ HEADINGS ROW ↑↑↑-->
+
+      <!--↓↓↓ MATCH 1 ↓↓↓-->
+          <tr>
+            <td> <div class="table_cell_content"> 1 </div> </td>
+            <td> <div class="table_cell_content"> 19.07.2025 </div> </td>
+            <td> <div class="table_cell_content"> 20:30 </div> </td>
+            <td> <div class="table_cell_content"> Спартак </div> </td>
+            <td> <div class="table_cell_content"> Динамо Махачкала </div> </td>
+            <td> <div class="table_cell_content"> 1 : 0 </div>  </td>
+          </tr>
+      <!--↑↑↑ MATCH 1 ↑↑↑-->
+
+      <!--↓↓↓ MATCH 2 ↓↓↓-->
+          <tr>
+            <td> <div class="table_cell_content"> 2 </div> </td>
+            <td> <div class="table_cell_content"> 27.07.2025 </div> </td>
+            <td> <div class="table_cell_content"> 17:30 </div> </td>
+            <td> <div class="table_cell_content"> Оренбург </div> </td>
+            <td> <div class="table_cell_content"> Динамо Махачкала </div> </td>
+            <td> <div class="table_cell_content"> 1 : 1 </div> </td>
+          </tr>
+      <!--↑↑↑ MATCH 2 ↑↑↑-->
+
+      <!--↓↓↓ MATCH 3 ↓↓↓-->
+          <tr>
+            <td> <div class="table_cell_content"> 3 </div> </td>
+            <td> <div class="table_cell_content"> 03.08.2025 </div> </td>
+            <td> <div class="table_cell_content"> 20:30 </div> </td>
+            <td> <div class="table_cell_content"> Динамо Махачкала </div> </td>
+            <td> <div class="table_cell_content"> Ахмат </div> </td>
+            <td> <div class="table_cell_content"> 1 : 0 </div> </td>
+          </tr>
+      <!--↑↑↑ MATCH 3 ↑↑↑-->
+
+      <!--↓↓↓ MATCH 4 ↓↓↓-->
+          <tr>
+            <td> <div class="table_cell_content"> 4 </div> </td>
+            <td> <div class="table_cell_content"> 08.08.2025 </div> </td>
+            <td> <div class="table_cell_content"> 20:00 </div> </td>
+            <td> <div class="table_cell_content"> Динамо Махачкала </div> </td>
+            <td> <div class="table_cell_content"> Акрон </div> </td>
+            <td> <div class="table_cell_content"> 1 : 1 </div>  </td>
+          </tr>
+      <!--↑↑↑ MATCH 4 ↑↑↑-->
+
+      <!--↓↓↓ MATCH 5 ↓↓↓-->
+          <tr>
+            <td> <div class="table_cell_content"> 5 </div> </td>
+            <td> <div class="table_cell_content"> 18.08.2025 </div> </td>
+            <td> <div class="table_cell_content"> 20:00 </div> </td>
+            <td> <div class="table_cell_content"> Пари НН </div> </td>
+            <td> <div class="table_cell_content"> Динамо Махачкала </div> </td>
+            <td> <div class="table_cell_content"> 2 : 0 </div> </td>
+          </tr>
+      <!--↑↑↑ MATCH 5 ↑↑↑-->
+
+      <!--↓↓↓ MATCH 6 ↓↓↓-->
+          <tr>
+            <td> <div class="table_cell_content"> 6 </div> </td>
+            <td> <div class="table_cell_content"> 31.08.2025 </div> </td>
+            <td> <div class="table_cell_content"> 20:30 </div> </td>
+            <td> <div class="table_cell_content"> Динамо Махачкала </div> </td>
+            <td> <div class="table_cell_content"> Динамо </div> </td>
+            <td> <div class="table_cell_content"> 1 : 0 </div>  </td>
+          </tr>
+      <!--↑↑↑ MATCH 6 ↑↑↑-->
+
+      <!--↓↓↓ MATCH 7 ↓↓↓-->
+          <tr>
+            <td> <div class="table_cell_content"> 7 </div> </td>
+            <td> <div class="table_cell_content"> 12.09.2025 </div> </td>
+            <td> <div class="table_cell_content"> 19:00 </div> </td>
+            <td> <div class="table_cell_content"> Рубин </div> </td>
+            <td> <div class="table_cell_content"> Динамо Махачкала </div> </td>
+            <td> <div class="table_cell_content"> 1 : 0 </div> </td>
+          </tr>
+      <!--↑↑↑ MATCH 7 ↑↑↑-->
+      
+      <!--↓↓↓ MATCH 8 ↓↓↓-->
+          <tr>
+            <td> <div class="table_cell_content"> 8 </div> </td>
+            <td> <div class="table_cell_content"> 20.09.2025 </div> </td>
+            <td> <div class="table_cell_content"> 19:30 </div> </td>
+            <td> <div class="table_cell_content"> Динамо Махачкала </div> </td>
+            <td> <div class="table_cell_content"> Локомотив </div> </td>
+            <td> <div class="table_cell_content"> 1 : 1 </div> </td>
+          </tr>
+      <!--↑↑↑ MATCH 8 ↑↑↑-->
+
+      <!--↓↓↓ MATCH 9 ↓↓↓-->
+          <tr>
+            <td> <div class="table_cell_content"> 9 </div> </td>
+            <td> <div class="table_cell_content"> 28.09.2025 </div> </td>
+            <td> <div class="table_cell_content"> 17:00 </div> </td>
+            <td> <div class="table_cell_content"> Динамо Махачкала </div> </td>
+            <td> <div class="table_cell_content"> Сочи </div> </td>
+            <td> <div class="table_cell_content"> 0 : 0 </div> </td>
+          </tr>
+      <!--↑↑↑ MATCH 9 ↑↑↑-->
+
+      <!--↓↓↓ MATCH 10 ↓↓↓-->
+          <tr>
+            <td> <div class="table_cell_content"> 10 </div> </td>
+            <td> <div class="table_cell_content"> 05.10.2025 </div> </td>
+            <td> <div class="table_cell_content"> 19:00 </div> </td>
+            <td> <div class="table_cell_content"> Балтика </div> </td>
+            <td> <div class="table_cell_content"> Динамо Махачкала </div> </td>
+            <td> <div class="table_cell_content"> 2 : 0 </div> </td>
+          </tr>
+      <!--↑↑↑ MATCH 10 ↑↑↑-->
+
+      <!--↓↓↓ MATCH 11 ↓↓↓-->
+          <tr>
+            <td> <div class="table_cell_content"> 11 </div> </td>
+            <td> <div class="table_cell_content"> 18.10.2025 </div> </td>
+            <td> <div class="table_cell_content"> 17:30 </div> </td>
+            <td> <div class="table_cell_content"> Динамо Махачкала </div> </td>
+            <td> <div class="table_cell_content"> Краснодар </div> </td>
+            <td> <div class="table_cell_content"> 0 : 2 </div> </td>
+          </tr>
+      <!--↑↑↑ MATCH 11 ↑↑↑-->
+
+      <!--↓↓↓ MATCH 12 ↓↓↓-->
+          <tr>
+            <td> <div class="table_cell_content"> 12 </div> </td>
+            <td> <div class="table_cell_content"> 25.10.2025 </div> </td>
+            <td> <div class="table_cell_content"> 16:30 </div> </td>
+            <td> <div class="table_cell_content"> Ростов </div> </td>
+            <td> <div class="table_cell_content"> Динамо Махачкала </div> </td>
+            <td> <div class="table_cell_content"> 1 : 1 </div> </td>
+          </tr>
+      <!--↑↑↑ MATCH 12 ↑↑↑-->
+
+      <!--↓↓↓ MATCH 13 ↓↓↓-->
+          <tr>
+            <td> <div class="table_cell_content"> 13 </div> </td>
+            <td> <div class="table_cell_content"> 01.11.2025 </div> </td>
+            <td> <div class="table_cell_content"> 17:45 </div> </td>
+            <td> <div class="table_cell_content"> Динамо Махачкала </div> </td>
+            <td> <div class="table_cell_content"> Крылья Советов </div> </td>
+            <td> <div class="table_cell_content"> 2 : 0 </div> </td>
+          </tr>
+      <!--↑↑↑ MATCH 13 ↑↑↑-->
+
+      <!--↓↓↓ MATCH 14 ↓↓↓-->
+          <tr>
+            <td> <div class="table_cell_content"> 14 </div> </td>
+            <td> <div class="table_cell_content"> 08.11.2025 </div> </td>
+            <td> <div class="table_cell_content"> 16:30 </div> </td>
+            <td> <div class="table_cell_content"> Динамо Махачкала </div> </td>
+            <td> <div class="table_cell_content"> ЦСКА </div> </td>
+            <td> <div class="table_cell_content"> 0 : 1 </div> </td>
+          </tr>
+      <!--↑↑↑ MATCH 14 ↑↑↑-->
+
+      <!--↓↓↓ MATCH 15 ↓↓↓-->
+          <tr>
+            <td> <div class="table_cell_content"> 15 </div> </td>
+            <td> <div class="table_cell_content"> 23.11.2025 </div> </td>
+            <td> <div class="table_cell_content"> 17:30 </div> </td>
+            <td> <div class="table_cell_content"> Динамо </div> </td>
+            <td> <div class="table_cell_content"> Динамо Махачкала </div> </td>
+            <td> <div class="table_cell_content"> 3 : 0 </div> </td>
+          </tr>
+      <!--↑↑↑ MATCH 15 ↑↑↑-->
+
+      <!--↓↓↓ MATCH 16 ↓↓↓-->
+          <tr>
+            <td> <div class="table_cell_content"> 16 </div> </td>
+            <td> <div class="table_cell_content"> 01.12.2025 </div> </td>
+            <td> <div class="table_cell_content"> 19:30 </div> </td>
+            <td> <div class="table_cell_content"> Сочи </div> </td>
+            <td> <div class="table_cell_content"> Динамо Махачкала </div> </td>
+            <td> <div class="table_cell_content"> 0 : 0 </div> </td>
+          </tr>
+      <!--↑↑↑ MATCH 16 ↑↑↑-->
+
+      <!--↓↓↓ MATCH 17 ↓↓↓-->
+          <tr>
+            <td> <div class="table_cell_content"> 17 </div> </td>
+            <td> <div class="table_cell_content"> 07.12.2025 </div> </td>
+            <td> <div class="table_cell_content"> 14:00 </div> </td>
+            <td> <div class="table_cell_content"> Динамо Махачкала </div> </td>
+            <td> <div class="table_cell_content"> Пари НН </div> </td>
+            <td> <div class="table_cell_content"> 0 : 1 </div> </td>
+          </tr>
+      <!--↑↑↑ MATCH 17 ↑↑↑-->
+
+<!-- NOT PLAYED YET --> <!-- NOT PLAYED YET --> <!-- NOT PLAYED YET --> <!-- NOT PLAYED YET --> <!-- NOT PLAYED YET -->
+
+      <!--↓↓↓ MATCH 18 ↓↓↓-->
+
+          <tr>
+            <td> <div class="table_cell_content"> 18 </div> </td>
+            <td> <div class="table_cell_content"> 28.02.2026 </div> </td>
+            <td> <div class="table_cell_content"> 19:30 </div> </td>
+            <td> <div class="table_cell_content"> Динамо Махачкала </div> </td>
+            <td> <div class="table_cell_content"> Рубин </div> </td>
+            <td> <div class="table_cell_content"> &mdash; </div> </td>
+          </tr>
+      <!--↑↑↑ MATCH 18 ↑↑↑-->
+
+      <!--↓↓↓ MATCH 19 ↓↓↓-->
+          <tr>
+            <td> <div class="table_cell_content"> 19 </div> </td>
+            <td> <div class="table_cell_content"> 08.03.2026 </div> </td>
+            <td> <div class="table_cell_content"> 14:30 </div> </td>
+            <td> <div class="table_cell_content"> Крылья Советов </div> </td>
+            <td> <div class="table_cell_content"> Динамо Махачкала </div> </td>
+            <td> <div class="table_cell_content"> &mdash; </div> </td>
+          </tr>
+      <!--↑↑↑ MATCH 19 ↑↑↑-->
+
+      <!--↓↓↓ MATCH 20 ↓↓↓-->
+          <tr>
+            <td> <div class="table_cell_content"> 20 </div> </td>
+            <td> <div class="table_cell_content"> 13.03.2026 </div> </td>
+            <td> <div class="table_cell_content"> 19:30 </div> </td>
+            <td> <div class="table_cell_content"> Динамо Махачкала </div> </td>
+            <td> <div class="table_cell_content"> Оренбург </div> </td>
+            <td> <div class="table_cell_content"> &mdash; </div> </td>
+          </tr>
+      <!--↑↑↑ MATCH 20 ↑↑↑-->
+
+      <!--↓↓↓ MATCH 21 ↓↓↓-->
+          <tr>
+            <td> <div class="table_cell_content"> 21 </div> </td>
+            <td> <div class="table_cell_content"> 21.03.2026 </div> </td>
+            <td> <div class="table_cell_content"> 16:00 </div> </td>
+            <td> <div class="table_cell_content"> ЦСКА </div> </td>
+            <td> <div class="table_cell_content"> Динамо Махачкала </div> </td>
+            <td> <div class="table_cell_content"> &mdash; </div> </td>
+          </tr>
+      <!--↑↑↑ MATCH 21 ↑↑↑-->
+
+      <!--↓↓↓ MATCH 22 ↓↓↓-->
+          <tr>
+            <td> <div class="table_cell_content"> 22 </div> </td>
+            <td> <div class="table_cell_content"> 05.04.2026 </div> </td>
+            <td> <div class="table_cell_content"> &mdash; </div> </td>
+            <td> <div class="table_cell_content"> Динамо Махачкала </div> </td>
+            <td> <div class="table_cell_content"> Балтика </div> </td>
+            <td> <div class="table_cell_content"> &mdash; </div> </td>
+          </tr>
+      <!--↑↑↑ MATCH 22 ↑↑↑-->
+
+      <!--↓↓↓ MATCH 23 ↓↓↓-->
+          <tr>
+            <td> <div class="table_cell_content"> 23 </div> </td>
+            <td> <div class="table_cell_content"> 12.04.2026 </div> </td>
+            <td> <div class="table_cell_content"> &mdash; </div> </td>
+            <td> <div class="table_cell_content"> Локомотив </div> </td>
+            <td> <div class="table_cell_content"> Динамо Махачкала </div> </td>
+            <td> <div class="table_cell_content"> &mdash; </div> </td>
+          </tr>
+      <!--↑↑↑ MATCH 23 ↑↑↑-->
+
+      <!--↓↓↓ MATCH 24 ↓↓↓-->
+          <tr>
+            <td> <div class="table_cell_content"> 24 </div> </td>
+            <td> <div class="table_cell_content"> 19.04.2026 </div> </td>
+            <td> <div class="table_cell_content"> &mdash; </div> </td>
+            <td> <div class="table_cell_content"> Динамо Махачкала </div> </td>
+            <td> <div class="table_cell_content"> Зенит </div> </td>
+            <td> <div class="table_cell_content"> &mdash; </div> </td>
+          </tr>
+      <!--↑↑↑ MATCH 24 ↑↑↑-->
+
+      <!--↓↓↓ MATCH 25 ↓↓↓-->
+          <tr>
+            <td> <div class="table_cell_content"> 25 </div> </td>
+            <td> <div class="table_cell_content"> 23.04.2026 </div> </td>
+            <td> <div class="table_cell_content"> &mdash; </div> </td>
+            <td> <div class="table_cell_content"> Акрон </div> </td>
+            <td> <div class="table_cell_content"> Динамо Махачкала </div> </td>
+            <td> <div class="table_cell_content"> &mdash; </div> </td>
+          </tr>
+      <!--↑↑↑ MATCH 25 ↑↑↑-->
+
+      <!--↓↓↓ MATCH 26 ↓↓↓-->
+          <tr>
+            <td> <div class="table_cell_content"> 26 </div> </td>
+            <td> <div class="table_cell_content"> 26.04.2026 </div> </td>
+            <td> <div class="table_cell_content"> &mdash; </div> </td>
+            <td> <div class="table_cell_content"> Краснодар </div> </td>
+            <td> <div class="table_cell_content"> Динамо Махачкала </div> </td>
+            <td> <div class="table_cell_content"> &mdash; </div> </td>
+          </tr>
+      <!--↑↑↑ MATCH 26 ↑↑↑-->
+
+      <!--↓↓↓ MATCH 27 ↓↓↓-->
+          <tr>
+            <td> <div class="table_cell_content"> 27 </div> </td>
+            <td> <div class="table_cell_content"> 03.05.2026 </div> </td>
+            <td> <div class="table_cell_content"> &mdash; </div> </td>
+            <td> <div class="table_cell_content"> Динамо Махачкала </div> </td>
+            <td> <div class="table_cell_content"> Ростов </div> </td>
+            <td> <div class="table_cell_content"> &mdash; </div> </td>
+          </tr>
+      <!--↑↑↑ MATCH 27 ↑↑↑-->
+
+      <!--↓↓↓ MATCH 28 ↓↓↓-->
+          <tr>
+            <td> <div class="table_cell_content"> 28 </div> </td>
+            <td> <div class="table_cell_content"> 10.05.2026 </div> </td>
+            <td> <div class="table_cell_content"> &mdash; </div> </td>
+            <td> <div class="table_cell_content"> Ахмат </div> </td>
+            <td> <div class="table_cell_content"> Динамо Махачкала </div> </td>
+            <td> <div class="table_cell_content"> &mdash; </div> </td>
+          </tr>
+      <!--↑↑↑ MATCH 28 ↑↑↑-->
+
+      <!--↓↓↓ MATCH 29 ↓↓↓-->
+          <tr>
+            <td> <div class="table_cell_content"> 29 </div> </td>
+            <td> <div class="table_cell_content"> 17.05.2026 </div> </td>
+            <td> <div class="table_cell_content"> &mdash; </div> </td>
+            <td> <div class="table_cell_content"> Динамо Махачкала </div> </td>
+            <td> <div class="table_cell_content"> Спартак </div> </td>
+            <td> <div class="table_cell_content"> &mdash; </div> </td>
+          </tr>
+      <!--↑↑↑ MATCH 29 ↑↑↑-->
+
+      </table>
+    </div>
+<!--↑↑↑ RPL SECTION ↑↑↑--> <!--↑↑↑ RPL SECTION ↑↑↑--> <!--↑↑↑ RPL SECTION ↑↑↑--> <!--↑↑↑ RPL SECTION ↑↑↑--> <!--↑↑↑ RPL SECTION ↑↑↑--> 
+
+
+  </body>
+
+
+</html>
