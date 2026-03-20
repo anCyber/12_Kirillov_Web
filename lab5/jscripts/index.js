@@ -195,9 +195,9 @@ function editCard(card, type) {
 function createHeader() {
     const header = document.createElement("header");
     header.innerHTML = `
-        <h1>Twenty One Pilots - Карточная коллекция</h1>
+        <h1> Лабораторная работа №5 </h1>
         <div class="edit-toggle">
-            <button id="editModeToggle">Режим редактирования</button>
+            <button id="editModeToggle"> Исправить ошибку </button>
         </div>
     `;
     document.body.appendChild(header);
