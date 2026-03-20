@@ -51,12 +51,12 @@ header h1 {
 }
 
 .container {
-    max-width: 1600px;  /* увеличено для 5 карточек */
+    max-width: 1600px;
     margin: 0 auto;
     padding: 20px;
 }
 
-/* Сетка для всех карточек (участники и остальные) */
+
 .cards-grid {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
@@ -65,14 +65,13 @@ header h1 {
     margin-bottom: 40px;
 }
 
-/* Для секции участников оставляем ту же сетку, но если участников меньше, они не растягиваются */
-/* Общие стили для всех карт */
+
 .card_vertical_flexbox,
 .member_card_vertical_flexbox {
     display: flex;
     flex-direction: column;
-    width: 100%;        /* занимает всю ширину ячейки сетки */
-    max-width: 280px;   /* ограничение, чтобы не были слишком широкими */
+    width: 100%;
+    max-width: 280px;   
     background: #fff;
     border-radius: 16px;
     box-shadow: 0 4px 12px rgba(0,0,0,0.1);
@@ -114,7 +113,7 @@ header h1 {
     color: #555;
 }
 
-/* Убираем фон и левую границу */
+
 .stats-block {
     margin: 12px;
     padding: 8px 12px;
@@ -149,7 +148,7 @@ hr {
     color: #514f4f;
 }
 
-/* Специфичные стили для песен */
+
 .song_cover_and_album_horizontal_flexbox {
     display: flex;
     gap: 12px;
