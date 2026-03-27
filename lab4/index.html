@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+
+  <head>
+    <meta charset="UTF-8"> 
+    <title> Lab_4 Kirillov KS-20 </title>
+    <style>
+      /*↓↓↓ GENERAL SECTION ↓↓↓*/  /*↓↓↓ GENERAL SECTION ↓↓↓*/  /*↓↓↓ GENERAL SECTION ↓↓↓*/
+      :root {
+        --background-color: rgb(22, 21, 21);
+        --text-color: #F1F1F1;
+
+        --header-background-color: rgb(44, 42, 42);
+        --header-shadow-color: rgba(15, 15, 15, 1.0);
+        --headings-color: rgba(232, 217, 213, 0.90);
+        --anecdotes-section-background-color: #272727;
+        --anecdotes-panel-foreground-color: rgb(36, 35, 35);
+        --anecdotes-panel-background-color: rgb(31, 28, 28);
+
+        --content-text-color: rgba(232, 217, 213, 0.70);
+
+        --content-gradient-lighter-color: rgba(120, 94, 94, 0.30);
+        --content-gradient-darker-color: rgba(22, 21, 21, 0.75);
+        --anecdotes-section-inset-shadow-color: rgb(22, 21, 21);
+        --table-shadow-color: rgba(229, 225, 202, 0.15);
+        --anecdotes-panel-shadow-color: rgba(0, 0, 0, 0.75);
+
+        --submit-review-button-background-color: #252625;
+        --review-input-border-color: #434343;
+        --single-review-background-color: rgba(43, 43, 43, 0.80);
+      }
+      body {
+        margin: 0px;
+        background-color: var(--background-color);
+        min-width: 1050px;
+      }
+      
+      body.light-theme {
+        --background-color: rgb(245, 245, 245);
+        --text-color: #1e1d1d;
+
+        --header-background-color: rgb(252, 252, 252);
+        --header-shadow-color: rgba(255, 255, 255, 1.0);
+        --headings-color: rgba(18, 18, 18, 0.9);
+        --anecdotes-section-background-color: rgb(235, 235, 235);
+        --anecdotes-panel-foreground-color: rgb(241, 241, 241);
+        --anecdotes-panel-background-color: rgb(235, 235, 235);
+
+        --content-text-color: rgba(24, 24, 24, 0.85);
+
+        --content-gradient-lighter-color: rgba(222, 222, 222, 0.3);
+        --content-gradient-darker-color: rgba(247, 247, 247, 0.75);
+        --anecdotes-section-inset-shadow-color: rgba(250, 250, 250, 0.90);
+        --table-shadow-color: rgba(29, 25, 22, 0.34);
+        --anecdotes-panel-shadow-color: rgba(22, 12, 17, 0.35);
+
+        --submit-review-button-background-color: #dddddd;
+        --review-input-border-color: #bcbcbc;
+        --single-review-background-color: rgba(231, 231, 231, 0.8);
+      }
+
+      p {
+        margin: 0px;
+        color: var(--text-color);
+        font-family: 'Courier New';
+      }
+
+      figure {
+        margin: 0px;
+      }
+
+      header {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: var(--header-background-color);
+        box-shadow: 0px 24px 36px var(--header-shadow-color);
+
+        position: sticky;
+        top: 0px;
+        height: clamp(80px, 12vh, 150px);
+        z-index: 2;
+      }
+      h1 {
+        margin: 0px;
+        font-family: 'Courier New';
+        font-size: clamp(36px, 4vw, 90px);
+        font-weight: 400;
+        color: var(--headings-color);
+        text-align: center;
+      }
+
+      h2 {
+        margin: 0px;
+        padding: 8px 0px 24px 0px;
+        font-family: 'Courier New';
+        font-size: clamp(32px, 2.75vw, 60px);
+        font-weight: 400;
+        color: var(--headings-color);
+        text-align: center;
+
+        text-decoration: 2px underline rgba(232, 217, 213, 0.08);
+        text-underline-offset: 18px;
+      }
+
+      h4 {
+        margin: 0px;
+        padding: 8px 0px 24px 0px;
+        font-family: 'Courier New';
+        font-size: clamp(16px, 0.9vw, 40px);
+        font-weight: 400;
+        color: var(--headings-color);
+      }
+
+      table {
+        margin-top: 40px;
+        border-spacing: 0px;
+        text-align: center;
+        box-shadow:  0px 0px 40px var(--table-shadow-color);
+      }
+
+      tr {
+        font-family: 'Courier New';
+        font-size: clamp(14px, 1.25vw, 19px);
+        color: rgba(234, 234, 230, 0.70);
+        font-weight: 700;
+      }
+      th {
+        font-weight: 900;
+      }
+      td {
+        aspect-ratio: 1 / 1;
+      }
+
+      /* White cells */
+      tr:nth-child(even) :is(td,th):nth-child(even),
+      tr:nth-child(odd) :is(td,th):nth-child(odd) {
+        background: rgba(234, 234, 230, 1.0);
+        color: rgba(21, 21, 20, 0.60);
+      }
+      /* Black cells (закрашиваем те, что были прозрачными) */
+      tr:nth-child(even) :is(td,th):nth-child(odd),
+      tr:nth-child(odd) :is(td,th):nth-child(even) {
+        background: rgba(21, 21, 20, 1.0); /* Твой тёмный цвет */
+        color: rgba(234, 234, 230, 0.8);   /* Светлый текст для контраста */
+      }
+
+      /* First column (match number) */
+      tr:nth-child(2n+3) :is(td,th):nth-child(1),
+      tr:nth-child(even) :is(td,th):nth-child(1) {
+        font-size: clamp(20px, 2vw, 26px);
+        font-weight: 900;
+      }
+
+      /* First row (headings) */
+      tr:nth-child(1) :is(td,th):nth-child(odd),
+      tr:nth-child(1) :is(td,th):nth-child(even) {
+        font-size: clamp(14px, 1.25vw, 30px);
+        color: rgba(15, 15, 14, 0.90);
+      }
+      tr:nth-child(1) :is(td,th):nth-child(even) {
+        color: rgba(240, 240, 236, 0.90);
+      }
+      /*↑↑↑ GENERAL SECTION ↑↑↑*/  /*↑↑↑ GENERAL SECTION ↑↑↑*/  /*↑↑↑ GENERAL SECTION ↑↑↑*/  
+
+
+
+      .theme_changer_button {
+        position: fixed;
+        left: 50px;
+        font-family: Arial;
+        font-size: 22px;
+        padding: 1% 2%;
+
+        background-color: var(--header-background-color);
+        box-shadow: 0px 0px 4px 4px rgba(0, 0, 0, 0.18);
+        border: none;
+        border-radius: 48px;
+        cursor: pointer;
+        transition: 0.10s;
+      }
+      .theme_changer_button:hover {
+        box-shadow: 0px 0px 2px 2px rgba(0, 0, 0, 0.10);
+      }
+      .theme_changer_button:active {
+        opacity: 0.8;
+      }
+
+
+
+
+
+      /*↓↓↓ ANECDOTES SECTION ↓↓↓*/  /*↓↓↓ ANECDOTES SECTION ↓↓↓*/  /*↓↓↓ ANECDOTES SECTION ↓↓↓*/
+      .anecdotes_lights_section_background {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+
+        background-color: var(--anecdotes-section-background-color);
+        padding: 60px 0px 80px 0px;
+        box-shadow: inset 0px -40px 20px -25px var(--anecdotes-section-inset-shadow-color),  inset 0px 40px 20px -25px var(--anecdotes-section-inset-shadow-color);
+      }
+
+
+      .anecdotes_panel_foreground {
+        max-width: 85%;
+        background-color: var(--anecdotes-panel-foreground-color);
+        box-shadow: 0px 0px 36px var(--anecdotes-panel-shadow-color);
+        border-radius: 73px;
+        padding: 3.25%;
+      }
+
+      .anecdotes_panel_background {
+        display: flex;
+        column-gap: 2%;
+        padding: 2% 5%;
+
+        background-color: var(--anecdotes-panel-background-color);
+        box-shadow: inset 0px 0px 12px rgba(0, 0, 0, 0.42);
+        border-radius: 48px;
+      }
+
+      .single_anecdote_red_circle {
+        background-color: rgb(180, 42, 42);
+        border: 1px solid rgba(201, 201, 201, 0.02);
+        box-shadow: 0px 0px 40px rgb(213, 69, 69), inset 0px 0px 24px rgba(58, 15, 15, 0.45);
+
+        display: flex;
+        align-items: center;
+        text-align: center;
+
+        flex: 1;
+        aspect-ratio: 1 / 1;
+        border-radius: 50%;
+      }
+      .single_anecdote_red_circle:hover {
+        box-shadow: none;
+        border: none;
+        margin: 0px 1px; /* Compensating lack of border */
+        background-color: transparent;
+      }
+      .single_anecdote_red_circle:hover .anecdote_image {
+        display: inline-block;
+      }
+      .single_anecdote_red_circle:hover .anecdote_text {
+        display: none;
+      }
+
+      .anecdote_image {
+        width: 100%;
+        border-radius: 50%;
+        object-fit: contain;
+        object-position: center;
+        display: none;
+      }
+
+      .anecdote_text {
+        max-width: 77%;
+        max-height: 82%;
+        margin: auto auto;
+        font-family: Raleway;
+        font-size: clamp(11px, 1vw, 20px);
+        font-weight: 400;
+      }
+      /*↑↑↑ ANECDOTES SECTION ↑↑↑*/  /*↑↑↑ ANECDOTES SECTION ↑↑↑*/  /*↑↑↑ ANECDOTES SECTION ↑↑↑*/
+
+
+      /*↓↓↓ LO_CONTENT SECTION ↓↓↓*/  /*↓↓↓ LO_CONTENT SECTION ↓↓↓*/  /*↓↓↓ LO_CONTENT SECTION ↓↓↓*/
+      .lo_content_background {
+        background-image: url("/resources/lo_content_images/track_layout_25.png"), linear-gradient(180deg, var(--content-gradient-darker-color), var(--content-gradient-lighter-color));
+        background-position: center;
+        background-size: contain;
+        background-repeat: no-repeat;
+        box-shadow: inset 0px -40px 60px -25px rgba(106, 86, 86, 0.20);
+      }
+
+      .lo_content_grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        column-gap: 4%;
+        row-gap: clamp(50px, 4vw, 150px);
+
+        margin: 3.5% 6%;
+        margin-bottom: 0px;
+        padding-bottom: 4%;
+
+        align-items: center;
+        justify-items: center;
+      }
+
+
+      .lo_content_description {
+        text-align: justify;
+        font-size: clamp(16px, 1.20vw, 26px);
+        color: var(--content-text-color);
+      }
+
+      .lo_content_image {
+        width: 90%;
+        height: 88%;
+        object-fit: cover;
+
+        border-radius: 4px;
+        box-shadow: 2px 4px 20px rgba(16, 16, 16, 0.80);
+      }
+      /*↑↑↑ LO_CONTENT SECTION ↑↑↑*/  /*↑↑↑ LO_CONTENT SECTION ↑↑↑*/  /*↑↑↑ LO_CONTENT SECTION ↑↑↑*/
+
+
+      /*↓↓↓ QUOTES SECTION ↓↓↓*/  /*↓↓↓ QUOTES SECTION ↓↓↓*/  /*↓↓↓ QUOTES SECTION ↓↓↓*/
+      .lo_content_quotes_background {
+        background-image: linear-gradient(180deg, var(--content-gradient-lighter-color), var(--content-gradient-darker-color));
+        box-shadow: inset 0px 40px 60px -25px rgba(106, 86, 86, 0.20);
+      }
+
+
+      .lo_content_quotes_container {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        column-gap: 80px;
+        margin: 0px 50px;
+        padding-top: 50px;
+        padding-bottom: 50px;
+        font-family: 'Courier New';
+        font-size: clamp(12px, 1vw, 26px);
+        font-weight: bold;
+        color: var(--content-text-color);
+      }
+
+
+      .single_quote_block {
+        font-weight: 400;
+      }
+      /*↑↑↑ QUOTES SECTION ↑↑↑*/  /*↑↑↑ QUOTES SECTION ↑↑↑*/  /*↑↑↑ QUOTES SECTION ↑↑↑*/
+
+
+      /*↓↓↓ RPL SECTION ↓↓↓*/  /*↓↓↓ RPL SECTION ↓↓↓*/  /*↓↓↓ RPL SECTION ↓↓↓*/
+      .rpl_section {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .rpl_background {
+        display: flex;
+        justify-content: center;
+
+        background-image: linear-gradient(0deg, var(--content-gradient-darker-color),var(--content-gradient-lighter-color), var(--content-gradient-darker-color));
+        box-shadow: inset 0px -40px 60px -25px rgba(106, 86, 86, 0.20);
+        padding-bottom: 110px;
+      }
+
+      .table_cell_content {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        width: clamp(86px, 8vw, 200px);
+        aspect-ratio: 1 / 1;
+      }
+      /*↑↑↑ RPL SECTION ↑↑↑*/  /*↑↑↑ RPL SECTION ↑↑↑*/  /*↑↑↑ RPL SECTION ↑↑↑*/
+
+      /*↓↓↓ REVIEWS SECTION ↓↓↓*/  /*↓↓↓ REVIEWS SECTION ↓↓↓*/  /*↓↓↓ REVIEWS SECTION ↓↓↓*/
+      .reviews_section_vertical_flexbox {
+        display: flex;
+        flex-direction: column;
+        row-gap: 5vh;
+
+        justify-content: center;
+
+        width: 70%;
+        margin: 6vh auto 9vh auto;
+        padding: 4vw;
+      }
+
+      #reviews_vertical_flexbox {
+        display: flex;
+        flex-direction: column;
+        row-gap: 3vh;
+      }
+
+      .single_review {
+        width: 90%;
+        margin: 0 auto;
+        padding: 1vw;
+        background-color: var(--single-review-background-color);
+        box-shadow: 0 0 6px 6px rgba(0, 0, 0, 0.10);
+        border: none;
+        border-radius: 24px;
+        overflow-wrap: break-word;
+      }
+
+
+      #user_review_form {
+        width: 100%;
+        display: flex;
+        gap: 10px;
+        margin-top: 30px;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .input_spaces_vertical_flexbox {
+        width: 70%;
+        display: flex;
+        flex-direction: column;
+        
+        row-gap: 30px;
+      }
+      #user_review_form input, #user_review_form textarea {
+        padding: 10px;
+        border: 2px solid var(--review-input-border-color);
+        border-radius: 4px;
+        background: var(--background-color);
+        color: var(--content-text-color);
+      }
+
+      #review_text {
+        resize: none;
+      }
+
+      #submit_review_button {
+        height: 64px;
+        padding: 10px;
+        background-color: var(--submit-review-button-background-color);
+        color: var(--text-color);
+        font-family: Arial;
+        font-size: 18px;
+        border: none;
+        border-radius: 20px;
+        cursor: pointer;
+        opacity: 0.9;
+        transition: all 0.2s;
+      }
+      #submit_review_button:hover {
+        opacity: 1;
+      }
+      #submit_review_button:active {
+        opacity: 0.8;
+      }
+      /*↑↑↑ REVIEWS SECTION ↑↑↑*/  /*↑↑↑ REVIEWS SECTION ↑↑↑*/  /*↑↑↑ REVIEWS SECTION ↑↑↑*/
+    </style>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link type="text/css" rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link type="text/css" href="https://fonts.googleapis.com/css2?family=Raleway:wght@200&display=swap" rel="stylesheet">   <!-- weight: 200 -->
+    <link type="text/css" href="https://fonts.googleapis.com/css2?family=Raleway&display=swap" rel="stylesheet">            <!-- weight: 400 -->
+    <link type="text/css" href="https://fonts.googleapis.com/css2?family=Raleway:wght@700&display=swap" rel="stylesheet">   <!-- weight: 700 -->
+    <link type="text/css" href="https://fonts.googleapis.com/css2?family=Raleway:wght@900&display=swap" rel="stylesheet">   <!-- weight: 900 -->
+
+    <script type="text/javascript" src="jscripts/index.js" defer></script>
+  </head>
+
+  
+  <body>
+
+<!--↓↓↓ HEADER SECTION ↓↓↓--> <!--↓↓↓ HEADER SECTION ↓↓↓--> <!--↓↓↓ HEADER SECTION ↓↓↓--> <!--↓↓↓ HEADER SECTION ↓↓↓-->
+    <header>
+      <button class="theme_changer_button" id="theme_button">
+        Theme
+      </button>
+      <h1> Лабораторная №4 </h1>
+    </header>
+<!--↑↑↑ HEADER SECTION ↑↑↑--> <!--↑↑↑ HEADER SECTION ↑↑↑--> <!--↑↑↑ HEADER SECTION ↑↑↑--> <!--↑↑↑ HEADER SECTION ↑↑↑-->
+
+<!--↓↓↓ ANECDOTES SECTION ↓↓↓--> <!--↓↓↓ ANECDOTES SECTION ↓↓↓--> <!--↓↓↓ ANECDOTES SECTION ↓↓↓--> <!--↓↓↓ ANECDOTES SECTION ↓↓↓-->
+    <section class="anecdotes_lights_section_background">
+      <h2> Анекдоты </h2>
+      <div class="anecdotes_panel_foreground">
+        <div class="anecdotes_panel_background">
+
+  <!--↓↓↓ ANECDOTE 1 ↓↓↓-->
+          <figure class="single_anecdote_red_circle">
+            <p class="anecdote_text">
+              Мой бизнес по продаже цветочных удобрений шёл хорошо...
+              Но Apple подала на меня в суд...
+              У них уже был патент на продажу г()8hа для нарциссов по завышенным ценам. 
+            </p>
+            <img class="anecdote_image" src="resources/anecdote_images/image_1.png" alt="Картинка, сгенерированная ии по тексту анека_1">
+          </figure>
+  <!--↑↑↑ ANECDOTE 1 ↑↑↑-->
+
+  <!--↓↓↓ ANECDOTE 2 ↓↓↓-->
+          <figure class="single_anecdote_red_circle">
+            <p class="anecdote_text">
+              Жизнь дождевого червя после удара лопатой разделилась на до и ждевого червя.
+            </p>
+            <img class="anecdote_image" src="resources/anecdote_images/image_2.png" alt="Картинка, сгенерированная ии по тексту анека_2">
+          </figure>
+  <!--↑↑↑ ANECDOTE 2 ↑↑↑-->
+
+  <!--↓↓↓ ANECDOTE 3 ↓↓↓-->
+          <figure class="single_anecdote_red_circle">
+            <p class="anecdote_text">
+              - Батюшка, почему в интернете все говорят, что тр@*@ли мою маму?<br>
+              - Не обращай на них внимания, сын мой.
+            </p>
+            <img class="anecdote_image" src="resources/anecdote_images/image_3.png" alt="Картинка, сгенерированная ии по тексту анека_3">
+          </figure>
+  <!--↑↑↑ ANECDOTE 3 ↑↑↑-->
+
+  <!--↓↓↓ ANECDOTE 4 ↓↓↓-->
+          <figure class="single_anecdote_red_circle">
+            <p class="anecdote_text">
+              Знаете, чем пришлось пожертвовать человеку, ставшему обладателем первой посудомойки?<br>
+              Ребром.
+            </p>
+            <img class="anecdote_image" src="resources/anecdote_images/image_4.png" alt="Картинка, сгенерированная ии по тексту анека_4">
+          </figure>
+  <!--↑↑↑ ANECDOTE 4 ↑↑↑-->
+
+  <!--↓↓↓ ANECDOTE 5 ↓↓↓-->
+          <figure class="single_anecdote_red_circle">
+            <p class="anecdote_text">
+              Один терапевт - это 1024 гигапевтов и 1024^2 мегапевтов.
+            </p>
+            <img class="anecdote_image" src="resources/anecdote_images/image_5.png" alt="Картинка, сгенерированная ии по тексту анека_5">
+          </figure>
+  <!--↑↑↑ ANECDOTE 5 ↑↑↑-->
+
+        </div>
+      </div>
+    </section>
+<!--↑↑↑ ANECDOTES SECTION ↑↑↑--> <!--↑↑↑ ANECDOTES SECTION ↑↑↑--> <!--↑↑↑ ANECDOTES SECTION ↑↑↑--> <!--↑↑↑ ANECDOTES SECTION ↑↑↑-->
+
+<!--↓↓↓ LOCONTENT SECTION ↓↓↓--> <!--↓↓↓ LOCONTENT SECTION ↓↓↓--> <!--↓↓↓ LOCONTENT SECTION ↓↓↓--> <!--↓↓↓ LOCONTENT SECTION ↓↓↓--> 
+    <section class="lo_content_background">
+      <h2> F1 Гран-при Франции 2021 </h2>
+      <div class="lo_content_grid">
+  <!--↓↓↓ ROW 1 ↓↓↓-->
+        <p class="lo_content_description">
+          На зимних каникулах я решил посмотреть сезон Формулы 1 2021. Начав следить за спортом в 2024 году, я знал о происходящих в том сезоне событиях лишь понаслышке.<br>
+          Мне захотелось это исправить.<br>
+          Последним этапом, который я посмотрел на текущий момент, стал Гран-при Франции. Солнечная погода, ветер, температура воздуха 25 градусов цельсия.<br>
+          Ферстаппен, квалифицировавшийся на поул-позицию уже во втором повороте блокирует шины и теряет лидерство, пропуская вперёд своего основного соперника в битве за титул чемпиона мира - Льюиса Хэмилтона.<br>
+          Впереди 53 круга борьбы двух пилотов и двух коллективов.<br>
+          Удастся ли семикратному чемпиону мира сохранить подаренное ему лидерство до конца гонки?<br>
+          Смогут ли RedBull Racing переиграть Mercedes в стратегии?<br>
+          Кто из пилотов станет лидером чемпионата по окончании 7-го этапа этого легендарного сезона?
+        </p>
+        <img class="lo_content_image" src="resources/lo_content_images/race_start.png" alt="Непрогрузившаяся фотка начала гонки">
+  <!--↑↑↑ ROW 1 ↑↑↑-->
+
+  <!--↓↓↓ ROW 2 ↓↓↓-->
+        <img class="lo_content_image" src="resources/lo_content_images/MV-LH_wheel_to_wheel.png" alt="Непрогрузившаяся фотка борьбы Макса и Льюиса">
+        <p class="lo_content_description">
+          По началу гонка мне показалась скучной. Разменов позициями почти не происходило, начинало казаться, что все 305 оставшихся километров дистанции пройдут просто для галочки, без изменений в первой десятке.<br>
+          Однако всего через несколько кругов множество пилотов начало жаловаться на ухудшение резины. Сцепление с асфальтом скоращалось значительно быстрее, чем команды ожидали этого.<br>
+          Уже на 14-ом круге был совершён первый пит-стоп. На этом моменте стало очевидно, что решающую роль в этой гонке сыграет стратегия, которую изберёт каждая из команд.<br>
+          Множество неожиданностей, длительная погоня и один из лучших обгонов, что я видел, заставили меня изменить своё первоначальное мнение об этом этапе и пристально наблюдать за разрывом между лидерами на последних кругах гонки.<br>
+          Я рекомендую каждому, кто увлекается Формулой 1, посмотреть этот Гран-при. Вы об этом не пожалеете.
+        </p>
+  <!--↑↑↑ ROW 2 ↑↑↑--> 
+      </div>
+    </section>
+
+    <section class="lo_content_quotes_background">
+      <h2> Цитаты </h2>
+      <ul class="lo_content_quotes_container">
+
+<!--↓↓↓ QUOTE 1 ↓↓↓--> <!--↓↓↓ QUOTE 1 ↓↓↓--> <!--↓↓↓ QUOTE 1 ↓↓↓--> <!--↓↓↓ QUOTE 1 ↓↓↓--> <!--↓↓↓ QUOTE 1 ↓↓↓--> <!--↓↓↓ QUOTE 1 ↓↓↓-->
+        <li> 
+          <q class="single_quote_block">The stewards are saying 'No investigation necessary' on that turn 2 incident, where Max Verstappen went off the track.<br>
+            So no penalties coming, but it's big penalty, as that he will finish the first lap one and a half seconds behind Lewis Hamilton.</q>
+          <br><br>David Croft [Lap 1]
+        </li>
+<!--↑↑↑ QUOTE 1 ↑↑↑--> <!--↑↑↑ QUOTE 1 ↑↑↑--> <!--↑↑↑ QUOTE 1 ↑↑↑--> <!--↑↑↑ QUOTE 1 ↑↑↑--> <!--↑↑↑ QUOTE 1 ↑↑↑--> <!--↑↑↑ QUOTE 1 ↑↑↑-->
+
+<!--↓↓↓ QUOTE 2 ↓↓↓--> <!--↓↓↓ QUOTE 2 ↓↓↓--> <!--↓↓↓ QUOTE 2 ↓↓↓--> <!--↓↓↓ QUOTE 2 ↓↓↓--> <!--↓↓↓ QUOTE 2 ↓↓↓--> <!--↓↓↓ QUOTE 2 ↓↓↓-->
+        <li> 
+          <q class="single_quote_block">So 1.3 seconds covers the top three in this race.</q>
+          <br><br>Martin Brundle [Lap 25]
+        </li>
+<!--↑↑↑ QUOTE 2 ↑↑↑--> <!--↑↑↑ QUOTE 2 ↑↑↑--> <!--↑↑↑ QUOTE 2 ↑↑↑--> <!--↑↑↑ QUOTE 2 ↑↑↑--> <!--↑↑↑ QUOTE 2 ↑↑↑--> <!--↑↑↑ QUOTE 2 ↑↑↑-->
+
+<!--↓↓↓ QUOTE 3 ↓↓↓--> <!--↓↓↓ QUOTE 3 ↓↓↓--> <!--↓↓↓ QUOTE 3 ↓↓↓--> <!--↓↓↓ QUOTE 3 ↓↓↓--> <!--↓↓↓ QUOTE 3 ↓↓↓--> <!--↓↓↓ QUOTE 3 ↓↓↓-->
+        <li> 
+          <q class="single_quote_block">We see the faces on the pitwall, the pit boards has been hang out for the drivers and the engineers studying the data,
+            whilst in the cockpit, behind the visor, the gladiator scraping away. Into the chicane we go,
+            breaking once more from a top speed of round about 200 miles an hour to 85 miles an hour.</q>
+          <br><br>David Croft [Lap 27]
+        </li>
+<!--↑↑↑ QUOTE 3 ↑↑↑--> <!--↑↑↑ QUOTE 3 ↑↑↑--> <!--↑↑↑ QUOTE 3 ↑↑↑--> <!--↑↑↑ QUOTE 3 ↑↑↑--> <!--↑↑↑ QUOTE 3 ↑↑↑--> <!--↑↑↑ QUOTE 3 ↑↑↑-->
+
+      </ul>
+    </section>
+<!--↑↑↑ LOCONTENT SECTION ↑↑↑--> <!--↑↑↑ LOCONTENT SECTION ↑↑↑--> <!--↑↑↑ LOCONTENT SECTION ↑↑↑--> <!--↑↑↑ LOCONTENT SECTION ↑↑↑--> 
+
+<!--↓↓↓ RPL SECTION ↓↓↓--> <!--↓↓↓ RPL SECTION ↓↓↓--> <!--↓↓↓ RPL SECTION ↓↓↓--> <!--↓↓↓ RPL SECTION ↓↓↓--> <!--↓↓↓ RPL SECTION ↓↓↓--> 
+    <section class="rpl_section">
+      <h2> Расписание матчей команды Динамо Махачкала </h2>
+      <div class="rpl_background">
+        <table>
+        <!--↓↓↓ HEADINGS ROW ↓↓↓-->
+            <tr>
+              <th> <div class="table_cell_content"> Номер<br>матча </div> </th>
+              <th> <div class="table_cell_content"> Дата<br>проведения </div> </th>
+              <th> <div class="table_cell_content"> Время<br>начала </div> </th>
+              <th> <div class="table_cell_content"> Хозяева </div> </th>
+              <th> <div class="table_cell_content"> Гости </div> </th>
+              <th> <div class="table_cell_content"> Итоговый<br>  счёт </div> </th>
+            </tr>
+        <!--↑↑↑ HEADINGS ROW ↑↑↑-->
+
+        <!--↓↓↓ MATCH 1 ↓↓↓-->
+            <tr>
+              <td> <div class="table_cell_content"> 1 </div> </td>
+              <td> <div class="table_cell_content"> 28.02.2026 </div> </td>
+              <td> <div class="table_cell_content"> 19:30 </div> </td>
+              <td> <div class="table_cell_content"> Динамо Махачкала </div> </td>
+              <td> <div class="table_cell_content"> Рубин </div> </td>
+              <td> <div class="table_cell_content"> &mdash; </div> </td>
+            </tr>
+        <!--↑↑↑ MATCH 1 ↑↑↑-->
+        </table>
+      </div>
+    </section>
+<!--↑↑↑ RPL SECTION ↑↑↑--> <!--↑↑↑ RPL SECTION ↑↑↑--> <!--↑↑↑ RPL SECTION ↑↑↑--> <!--↑↑↑ RPL SECTION ↑↑↑--> <!--↑↑↑ RPL SECTION ↑↑↑--> 
+
+<!--↓↓↓ REVIEWS SECTION ↓↓↓--> <!--↓↓↓ REVIEWS SECTION ↓↓↓--> <!--↓↓↓ REVIEWS SECTION ↓↓↓--> <!--↓↓↓ REVIEWS SECTION ↓↓↓--> 
+    <section class="reviews_section_vertical_flexbox" id="reviews_flexbox">
+      <h2> Отзывы читателей </h2>
+      <div id="reviews_vertical_flexbox"></div>
+
+      <form id="user_review_form">
+        <div class="input_spaces_vertical_flexbox">
+          <input type="text" id="reviewer_name" placeholder="Введите ваше имя" required>
+          <textarea type="text" id="review_text" required> </textarea>
+        </div>
+        <button type="submit" id="submit_review_button"> Оставить отзыв </button>
+      </form>
+      
+    </section>
+<!--↑↑↑ REVIEWS SECTION ↑↑↑--> <!--↑↑↑ REVIEWS SECTION ↑↑↑--> <!--↑↑↑ REVIEWS SECTION ↑↑↑--> <!--↑↑↑ REVIEWS SECTION ↑↑↑--> 
+
+  </body>
+
+
+</html>

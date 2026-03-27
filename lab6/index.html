@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+      <meta charset="UTF-8">
+      <title> Web-Lab 6 </title>
+
+      <link rel="stylesheet" href="resources/css_styles/general.css">
+      <link rel="stylesheet" href="resources/css_styles/other.css">
+      
+      <link rel="preconnect" href="https://fonts.googleapis.com">
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+      <link href="https://fonts.googleapis.com/css2?family=Bitcount+Single+Ink&display=swap" rel="stylesheet">
+      <script type="text/javascript" src="jscripts/index.js" defer> </script>
+  </head>
+
+
+
+  <body>
+
+      <nav>
+        <div class="navigation_panel_nameplate">
+          Kirillov Makar KS-20 
+        </div>
+
+        <div class="navigation_panel_horizontal_buttons_flexbox">
+          <button class="call_api_button" onclick="showSection('cats-section')">
+            Images
+          </button>
+
+          <button class="call_api_button" onclick="showSection('dogs-section')">
+            Facts
+          </button>
+
+          <button class="call_api_button" onclick="showSection('admin-section')">
+            DataBase
+          </button>
+
+          <button class="call_api_button" onclick="showSection('weather-section')">
+            Weather
+          </button>
+        </div>
+      </nav>
+
+      <main>
+        <section id="cats-section" class="single_API_content_section">
+          <h2> Get A Random Cat Image </h2>
+          <button class="call_API_button" onclick="getCatImageThroughAPI()">
+            Get Image
+          </button>
+
+          <div id="cat-loader" class="loader VISUALLY-HIDDEN">
+            Loading...
+          </div>
+          <div id="cat-result"> </div>
+        </section>
+
+
+        <section id="dogs-section" class="single_API_content_section VISUALLY-HIDDEN">
+          <h2> A Random Fact About Dogs </h2>
+          <button class="call_API_button" onclick="getDogFactThroughAPI()">
+            Get Fact
+          </button>
+
+          <div id="dog-loader" class="loader VISUALLY-HIDDEN">
+            Loading...
+          </div>
+          <p id="dog-fact-text" class="fact-text"> </p>
+        </section>
+
+        <section id="admin-section" class="single_API_content_section VISUALLY-HIDDEN">
+          <h2> Configure DataBase </h2>
+
+            <div class="database_configs_vertical_flexbox">
+              <input type="text" id="post-title" placeholder="Enter the Title">
+              <div class="database_buttons_horizontal_flexbox">
+                <button class="call_API_button" onclick="sendDataThroughAPI('POST')">
+                  Create
+                </button>
+
+                <button class="call_API_button" onclick="sendDataThroughAPI('PATCH')">
+                  Edit
+                </button>
+
+                <button class="call_API_button" onclick="sendDataThroughAPI('DELETE')">
+                  Delete
+                </button>
+              </div>
+            </div>
+
+            <div id="admin-loader" class="loader VISUALLY-HIDDEN"> Loading... </div>
+            <div class="result-box">
+              <pre id="admin-result"> OUTPUT </pre>
+            </div>
+        </section>
+
+        <section id="weather-section" class="single_API_content_section VISUALLY-HIDDEN">
+            <h2> Weather in Moscow </h2>
+            <button class="call_API_button" onclick="getWeatherThroughAPI()">
+              Check Weather
+            </button>
+            <div id="weather-loader" class="loader VISUALLY-HIDDEN"> Loading... </div>
+            <div id="weather-result" class="fact-text"> </div>
+        </section>
+      </main>
+
+      <footer>
+        <h1> Lab 6 </h1>
+      </footer>
+  </body>
+</html>

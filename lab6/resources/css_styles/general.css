@@ -1,0 +1,92 @@
+body {
+  margin: 0;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  background-color: rgba(31, 31, 31, 1.0);
+  font-family: "Bitcount Single Ink";
+}
+::-webkit-scrollbar {
+  display: none;
+}
+
+nav {
+  position: sticky;
+  top: 0;
+
+  justify-content: space-between;
+  box-shadow: 0 2vh 2vh -2vh rgba(0, 0, 0, 1.0);
+}
+
+nav,
+footer {
+  left: 0;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  background-color: rgba(42, 42, 42, 1.0);
+  border: none;
+  padding: 2.5vh 5vw;
+  box-sizing: border-box;
+}
+
+footer {
+  position: fixed;
+  bottom: 0;
+
+  justify-content: center;
+  box-shadow: 0 -2vh 2vh -2vh rgba(0, 0, 0, 1.0);
+}
+
+h1,
+h2 {
+  margin: 0;
+  font-family: "Bitcount Single Ink";
+  font-size: 3vw;
+}
+h2 {
+  font-size: 3.5vw;
+  margin-bottom: 2vh;
+}
+
+
+main {
+  margin: 15vh 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+img {
+  aspect-ratio: 1 / 1;
+
+  object-fit: cover;
+  object-position: center;
+  max-height: 40vh;
+
+  border: none;
+  border-radius: 1.5vh;
+  overflow: hidden;
+  margin-top: 4vh;
+  box-shadow: 0 0 2vh 2vh rgba(0, 0, 0, 0.15);
+}
+
+
+input {
+  width: 100%;
+  padding: 1vh 1vw;
+  box-sizing: border-box;
+  background: rgba(52, 52, 52, 1.0);
+  border: 1px solid rgba(82, 82, 82, 1.0);
+  border-radius: 0.35vh;
+
+  margin-bottom: 1vh;
+  font-family: inherit;
+  font-size: 1.1vw;
+  outline: none;
+}
+
+pre {
+    color: rgb(102, 102, 102);
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
